@@ -1,4 +1,5 @@
 // pages/updateLead.tsx
+import { fetchData, fetchDataById, updateLeadById } from './../../utils/api';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
@@ -17,20 +18,11 @@ const UpdateLead: React.FC = () => {
   useEffect(() => {
     const fetchLeadData = async () => {
       try {
-        // Fetch lead data based on the ID from your API
-        // const response = await fetch(`http://localhost:5000/lead/${id}`);
-         const response =
-            {
-            "lead_id":1,
-            "lead_name":"Turcotte Inc",
-            "email":"zdullingham0@a8.net",
-            "lead_status":"Qualified",
-            "source":"Web",
-        };
+        const response =  await fetchDataById(`lead/${id}`);
         const data = await response;
         setLeadData(data);
       } catch (error) {
-        console.error('Error fetching lead data:', error);
+        alert(`Error fetching data: ${error}`);
       }
     };
 
@@ -41,19 +33,11 @@ const UpdateLead: React.FC = () => {
 
   const handleUpdate = async () => {
     try {
-        console.log("checking")
-
-      await fetch(`http://localhost:5000/lead/update/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(leadData),
-      });
+      await updateLeadById(`lead/${id}`,leadData);
 
       router.push('/dashboard');
     } catch (error) {
-      console.error('Error updating lead data:', error);
+        alert(`Error updating data: ${error}`);
     }
   };
 

@@ -16,15 +16,52 @@ interface Lead {
 
 export const fetchData = async (endpoint: string): Promise<Lead[]> => {
   try {
-    console.log("checking thiss");
-
     const response = await axios.get<Lead[]>(`${API_BASE_URL}/${endpoint}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
 
-    console.log("checking this");
+export const fetchDataById = async (endpoint: string): Promise<Lead> => {
+  console.log(endpoint);
+  try {
+    const response = await axios.get<Lead>(`${API_BASE_URL}/${endpoint}`);
     console.log(response);
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const deleteLeadDataById = async (endpoint: string): Promise<any> => {
+  console.log(endpoint);
+  try {
+    const response = await axios.delete<Lead>(`${API_BASE_URL}/${endpoint}`);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
+export const updateLeadById = async (
+  endpoint: string,
+  data: any
+): Promise<any> => {
+  console.log(endpoint);
+  try {
+    const response = await axios.patch<any>(
+      `${API_BASE_URL}/${endpoint}`,
+      data
+    );
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error("Error posting data:", error);
     throw error;
   }
 };
