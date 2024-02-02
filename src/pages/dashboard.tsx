@@ -1,6 +1,7 @@
 // pages/dashboard.tsx
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
+import LeadDetailsDrawer from 'src/components/LeadDetailsDrawer';
 import DateRangeFilter from '../../src/components/DateRangeFilter';
 import { deleteLeadDataById, fetchData } from '../utils/api';
 
@@ -23,6 +24,8 @@ const Dashboard: React.FC = () => {
 
   const [sortField, setSortField] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+
 
   useEffect(() => {
     const fetchDashboardData = async () => {
@@ -90,6 +93,14 @@ const Dashboard: React.FC = () => {
     });
   }, [filteredData, sortField, sortDirection]);
 
+  const handleLeadClick = (lead: Lead) => {
+    setSelectedLead(lead);
+  };
+
+  const handleCloseDrawer = () => {
+    setSelectedLead(null);
+  };
+
 
   return (
     <div>
@@ -110,7 +121,7 @@ const Dashboard: React.FC = () => {
         </thead>
         <tbody>
         {sortedData.map((lead) => (
-            <tr key={lead.lead_id}>
+            <tr key={lead.lead_id} onClick={() => handleLeadClick(lead)}>
               <td>{lead.lead_id}</td>
               <td>{lead.lead_name}</td>
               <td>{lead.email}</td>
@@ -126,6 +137,8 @@ const Dashboard: React.FC = () => {
           ))}
         </tbody>
       </table>
+      <LeadDetailsDrawer isOpen={!!selectedLead} onClose={handleCloseDrawer} leadDetails={selectedLead} />
+
       <style jsx>{`
         table {
           width: 100%;

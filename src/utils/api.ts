@@ -14,6 +14,17 @@ interface Lead {
   deleted: string | null;
 }
 
+interface Interaction {
+  id: number;
+  interaction_type: string;
+  interaction_date: string;
+  details: {
+    follow_up_date: string;
+    priority: string;
+  };
+  updated_date: string;
+}
+
 export const fetchData = async (endpoint: string): Promise<Lead[]> => {
   try {
     const response = await axios.get<Lead[]>(`${API_BASE_URL}/${endpoint}`);
@@ -62,6 +73,32 @@ export const updateLeadById = async (
     return response.data;
   } catch (error) {
     console.error("Error posting data:", error);
+    throw error;
+  }
+};
+
+export const fetchInteractionsByLeadId = async (
+  endpoint: string
+): Promise<Interaction[]> => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/${endpoint}`);
+    console.log(response);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching interactions by lead ID:", error);
+    throw error;
+  }
+};
+
+export const createInteraction = async (interactionData: any): Promise<any> => {
+  try {
+    const response = await axios.post<any>(
+      `${API_BASE_URL}/interaction`,
+      interactionData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error creating interaction:", error);
     throw error;
   }
 };
