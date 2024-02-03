@@ -1,5 +1,3 @@
-// UpdateInteraction.tsx
-
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { fetchInteractionById, updateInteraction } from '../utils/api';
@@ -57,7 +55,7 @@ const UpdateInteraction: React.FC = () => {
       console.error('Error updating interaction:', error);
     }
   };
-  
+
   return (
     <div>
       <h1>Update Interaction</h1>

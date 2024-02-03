@@ -1,8 +1,6 @@
-// pages/dashboard.tsx
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
-import LeadDetailsDrawer from 'src/components/LeadDetailsDrawer';
+import LeadDetailsDrawer from '../components/LeadDetailsDrawer';
 import DateRangeFilter from '../../src/components/DateRangeFilter';
 import { deleteLeadDataById, fetchData } from '../utils/api';
 
