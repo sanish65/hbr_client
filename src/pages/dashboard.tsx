@@ -104,9 +104,9 @@ const Dashboard: React.FC = () => {
   return (
     <div>
       <h1>Lead Dashboard</h1>
-      <Link href="/overview">
+      {/* <Link href="/overview">
         Overview
-      </Link>
+      </Link> */}
       <DateRangeFilter onFilter={handleFilter} />
       <table>
         <thead>
