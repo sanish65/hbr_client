@@ -12,6 +12,7 @@ interface Lead {
   added_date: string;
   updated_date: string;
   deleted: string | null;
+  interaction_count: string;
 }
 
 interface Interaction {
