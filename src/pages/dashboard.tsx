@@ -14,6 +14,7 @@ interface Lead {
   added_date: string;
   updated_date: string;
   deleted: string | null;
+  interaction_count: string;
 }
 
 const Dashboard: React.FC = () => {
@@ -111,6 +112,7 @@ const Dashboard: React.FC = () => {
           <tr>
           <th onClick={() => handleSort('lead_id')}>Lead ID</th>
             <th onClick={() => handleSort('lead_name')}>Lead Name</th>
+            <th onClick={() => handleSort('interaction_count')}>Interaction Count</th>
             <th onClick={() => handleSort('email')}>Email</th>
             <th onClick={() => handleSort('lead_status')}>Status</th>
             <th onClick={() => handleSort('source')}>Source</th>
@@ -124,6 +126,7 @@ const Dashboard: React.FC = () => {
             <tr key={lead.lead_id} onClick={() => handleLeadClick(lead)}>
               <td>{lead.lead_id}</td>
               <td>{lead.lead_name}</td>
+              <td>{lead.interaction_count}</td>
               <td>{lead.email}</td>
               <td>{lead.lead_status}</td>
               <td>{lead.source}</td>

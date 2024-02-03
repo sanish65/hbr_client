@@ -43,7 +43,7 @@ const CreateInteraction: React.FC = () => {
         details,
       });
 
-    //   router.push(`/lead/${interactionData.lead_id}`);
+      router.push(`/dashboard`);
     } catch (error) {
       console.error('Error creating interaction:', error);
     }
