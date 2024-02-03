@@ -102,3 +102,91 @@ export const createInteraction = async (interactionData: any): Promise<any> => {
     throw error;
   }
 };
+
+export const deleteInteractionById = async (
+  deleteDetail: string
+): Promise<void> => {
+  try {
+    const response = await axios.delete<any>(`${API_BASE_URL}/${deleteDetail}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating interaction:", error);
+    throw error;
+  }
+};
+
+export const fetchInteractionById = async (url: string): Promise<any> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/${url}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error("Error fetching interaction by ID");
+  }
+};
+
+export const updateInteraction = async (data: any): Promise<void> => {
+  try {
+    console.log("haha");
+    console.log(data);
+
+    const response = await axios.patch<any>(
+      `${API_BASE_URL}/interaction/${data.id}`,
+      data
+    );
+    console.log(response);
+
+    return response.data;
+  } catch (error) {
+    throw new Error("Error updating interaction");
+  }
+};
+
+// Function to fetch leads per source
+export const fetchLeadsPerSource = async (): Promise<any[]> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/leads/source`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching leads per source:", error);
+    throw error;
+  }
+};
+
+// Function to fetch leads per status
+export const fetchLeadsPerStatus = async (): Promise<any[]> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/leads/status`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching leads per status:", error);
+    throw error;
+  }
+};
+
+export const fetchLeadsPerSourceWithStatus = async (): Promise<any[]> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/leads`);
+    const leads = await response.json();
+
+    const leadsPerSourceWithStatus = leads.reduce((acc, lead) => {
+      const source = lead.source;
+
+      if (!acc[source]) {
+        acc[source] = { source, statuses: [] };
+      }
+
+      acc[source].statuses.push(lead.lead_status);
+      return acc;
+    }, {});
+
+    const leadsPerSourceArray = Object.values(leadsPerSourceWithStatus);
+
+    return leadsPerSourceArray;
+  } catch (error) {
+    console.error("Error fetching leads per source with status:", error);
+    throw error;
+  }
+};

@@ -1,7 +1,7 @@
 // components/LeadDetailsDrawer.tsx
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
-import { fetchInteractionsByLeadId } from '../utils/api';
+import { deleteInteractionById, fetchInteractionsByLeadId } from '../utils/api';
 
 interface LeadDetailsDrawerProps {
   isOpen: boolean;
@@ -29,8 +29,13 @@ const LeadDetailsDrawer: React.FC<LeadDetailsDrawerProps> = ({ isOpen, onClose, 
     fetchInteractions();
   }, [leadDetails]);
 
+  const handleUpdateInteraction = (interactionId: number) => {
+    if (leadDetails && leadDetails.lead_id) {
+      router.push(`/update-interaction?lead_id=${leadDetails.lead_id}&interaction_id=${interactionId}`);
+    }
+  };
+
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    // Close the drawer if the click is outside the drawer content
     if (e.target === e.currentTarget) {
       onClose();
     }
@@ -40,6 +45,16 @@ const LeadDetailsDrawer: React.FC<LeadDetailsDrawerProps> = ({ isOpen, onClose, 
     // Navigate to the create interaction page with the lead ID
     if (leadDetails && leadDetails.lead_id) {
       router.push(`/create-interaction?lead_id=${leadDetails.lead_id}`);
+    }
+  };
+
+  const handleDeleteInteraction = async (interactionId: number) => {
+    try {
+      await deleteInteractionById(`interaction/${interactionId}`);
+
+      setInteractions((prevInteractions) => prevInteractions.filter((interaction) => interaction.id !== interactionId));
+    } catch (error) {
+      console.error('Error deleting interaction:', error);
     }
   };
 
@@ -76,6 +91,14 @@ const LeadDetailsDrawer: React.FC<LeadDetailsDrawerProps> = ({ isOpen, onClose, 
                     <td>{interaction.id}</td>
                     <td>{interaction.interaction_type}</td>
                     <td>{interaction.interaction_date}</td>
+                    <td>
+                      <button onClick={() => handleDeleteInteraction(interaction.id)}>
+                        Delete
+                      </button>
+                      <button onClick={() => handleUpdateInteraction(interaction.id)}>
+                          Update
+                        </button>
+                    </td>
                     {/* Add more cells as needed */}
                   </tr>
                 ))}

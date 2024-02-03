@@ -1,4 +1,5 @@
 // pages/dashboard.tsx
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import LeadDetailsDrawer from 'src/components/LeadDetailsDrawer';
@@ -71,9 +72,6 @@ const Dashboard: React.FC = () => {
         new Date(lead.added_date) >= new Date(startDate) && new Date(lead.added_date) <= new Date(endDate)
     );
 
-    console.log(startDate,"" ,endDate)
-    console.log(filteredData.length)
-
     setFilteredData(filteredResult);
   };
 
@@ -106,6 +104,9 @@ const Dashboard: React.FC = () => {
   return (
     <div>
       <h1>Lead Dashboard</h1>
+      <Link href="/overview">
+        Overview
+      </Link>
       <DateRangeFilter onFilter={handleFilter} />
       <table>
         <thead>
