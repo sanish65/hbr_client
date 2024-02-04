@@ -15,6 +15,9 @@ interface Lead {
   deleted: string | null;
   interaction_count: string;
 }
+interface LeadWithIndexSignature extends Lead {
+  [key: string]: any;
+}
 
 const Dashboard: React.FC = () => {
     const router = useRouter();
@@ -79,8 +82,8 @@ const Dashboard: React.FC = () => {
     }    
 
     return [...filteredData].sort((a, b) => {
-      const valueA = a[sortField];
-      const valueB = b[sortField];
+      const valueA = (a as LeadWithIndexSignature)[sortField];
+      const valueB = (b as LeadWithIndexSignature)[sortField];
 
       if (valueA === valueB) {
         return 0;
