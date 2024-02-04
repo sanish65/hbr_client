@@ -37,10 +37,8 @@ export const fetchData = async (endpoint: string): Promise<Lead[]> => {
 };
 
 export const fetchDataById = async (endpoint: string): Promise<Lead> => {
-  console.log(endpoint);
   try {
     const response = await axios.get<Lead>(`${API_BASE_URL}/${endpoint}`);
-    console.log(response);
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -49,10 +47,8 @@ export const fetchDataById = async (endpoint: string): Promise<Lead> => {
 };
 
 export const deleteLeadDataById = async (endpoint: string): Promise<any> => {
-  console.log(endpoint);
   try {
     const response = await axios.delete<Lead>(`${API_BASE_URL}/${endpoint}`);
-    console.log(response);
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -64,13 +60,11 @@ export const updateLeadById = async (
   endpoint: string,
   data: any
 ): Promise<any> => {
-  console.log(endpoint);
   try {
     const response = await axios.patch<any>(
       `${API_BASE_URL}/${endpoint}`,
       data
     );
-    console.log(response);
     return response.data;
   } catch (error) {
     console.error("Error posting data:", error);
@@ -83,7 +77,6 @@ export const fetchInteractionsByLeadId = async (
 ): Promise<Interaction[]> => {
   try {
     const response = await axios.get(`${API_BASE_URL}/${endpoint}`);
-    console.log(response);
     return response.data;
   } catch (error) {
     console.error("Error fetching interactions by lead ID:", error);
@@ -128,14 +121,10 @@ export const fetchInteractionById = async (url: string): Promise<any> => {
 
 export const updateInteraction = async (data: any): Promise<void> => {
   try {
-    console.log("haha");
-    console.log(data);
-
     const response = await axios.patch<any>(
       `${API_BASE_URL}/interaction/${data.id}`,
       data
     );
-    console.log(response);
 
     return response.data;
   } catch (error) {
