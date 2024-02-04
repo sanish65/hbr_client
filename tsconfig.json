@@ -14,10 +14,10 @@
         "types/*"
       ]
     },
+    "typeRoots": ["node_modules/@types", "your/other/type/roots"],
     "types": [
       "node",
-      "react",
-      "@types/axios"
+      "react"
     ],
     "lib": [
       "dom",

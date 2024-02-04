@@ -156,38 +156,44 @@ export const fetchLeadsPerSource = async (): Promise<any[]> => {
 };
 
 // Function to fetch leads per status
-export const fetchLeadsPerStatus = async (): Promise<any[]> => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/leads/status`);
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    console.error("Error fetching leads per status:", error);
-    throw error;
-  }
-};
+// export const fetchLeadsPerStatus = async (): Promise<any[]> => {
+//   try {
+//     const response = await fetch(`${API_BASE_URL}/leads/status`);
+//     const data = await response.json();
+//     return data;
+//   } catch (error) {
+//     console.error("Error fetching leads per status:", error);
+//     throw error;
+//   }
+// };
 
-export const fetchLeadsPerSourceWithStatus = async (): Promise<any[]> => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/leads`);
-    const leads = await response.json();
+// export const fetchLeadsPerSourceWithStatus = async (): Promise<any[]> => {
+//   try {
+//     const response = await fetch(`${API_BASE_URL}/leads`);
+//     const leads = await response.json();
 
-    const leadsPerSourceWithStatus = leads.reduce((acc, lead) => {
-      const source = lead.source;
+//     const leadsPerSourceWithStatus = leads.reduce(
+//       (
+//         acc: { [x: string]: { statuses: any[] } },
+//         lead: { source: any; lead_status: any }
+//       ) => {
+//         const source = lead.source;
 
-      if (!acc[source]) {
-        acc[source] = { source, statuses: [] };
-      }
+//         if (!acc[source]) {
+//           acc[source] = { source, statuses: [] };
+//         }
 
-      acc[source].statuses.push(lead.lead_status);
-      return acc;
-    }, {});
+//         acc[source].statuses.push(lead.lead_status);
+//         return acc;
+//       },
+//       {}
+//     );
 
-    const leadsPerSourceArray = Object.values(leadsPerSourceWithStatus);
+//     const leadsPerSourceArray = Object.values(leadsPerSourceWithStatus);
 
-    return leadsPerSourceArray;
-  } catch (error) {
-    console.error("Error fetching leads per source with status:", error);
-    throw error;
-  }
-};
+//     return leadsPerSourceArray;
+//   } catch (error) {
+//     console.error("Error fetching leads per source with status:", error);
+//     throw error;
+//   }
+// };
