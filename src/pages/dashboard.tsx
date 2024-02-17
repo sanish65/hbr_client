@@ -104,6 +104,10 @@ const Dashboard: React.FC = () => {
 
   return (
     <div>
+      <nav>
+      <a href="/api/auth/logout" className="logout-link">Logout</a>
+
+      </nav>
       <h1>Lead Dashboard</h1>
       {/* <Link href="/overview">
         Overview

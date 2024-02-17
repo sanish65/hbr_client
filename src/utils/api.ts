@@ -26,6 +26,28 @@ interface Interaction {
   updated_date: string;
 }
 
+export const Signup = async (data: any): Promise<any> => {
+  try {
+    console.log(`${API_BASE_URL}/authZero/signup`);
+    const response = await axios.post(`${API_BASE_URL}/authZero/signup`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error in signup:", error);
+    throw error;
+  }
+};
+
+export const Login = async (data: { sub: string }): Promise<any> => {
+  try {
+    console.log(`${API_BASE_URL}/authZero/login`);
+    const response = await axios.post(`${API_BASE_URL}/authZero/login`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error in login:", error);
+    throw error;
+  }
+};
+
 export const fetchData = async (endpoint: string): Promise<Lead[]> => {
   try {
     const response = await axios.get<Lead[]>(`${API_BASE_URL}/${endpoint}`);
