@@ -17,18 +17,19 @@ export default function Home() {
     const sub = user?.sub;
     if(sub){
       const data = await Login({sub});
-      console.log(data)
-      if(data){
-        router.push('/dashboard');
-      }
+      console.log("data")
+      console.log(data);
 
-    } else if(user) {
-      try {
-        await Signup({...user});
-      } catch (error) {
-        setSignupError(error.message);
+      if(data.status === 200){
+        router.push('/dashboard');
+      }else{
+        try {
+          await Signup({...user});
+        } catch (error) {
+          setSignupError(error.message);
+        }
       }
-    }
+    } 
   };
 
   return (

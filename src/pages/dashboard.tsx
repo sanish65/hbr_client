@@ -2,38 +2,37 @@ import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import LeadDetailsDrawer from '../components/LeadDetailsDrawer';
 import DateRangeFilter from '../../src/components/DateRangeFilter';
-import { deleteLeadDataById, fetchData } from '../utils/api';
+import {  deleteWebsiteById, fetchWebsiteData } from '../utils/api';
 
-interface Lead {
-  lead_id: number;
-  lead_name: string;
-  email: string;
-  lead_status: string;
-  source: string;
-  added_date: string;
-  updated_date: string;
-  deleted: string | null;
-  interaction_count: string;
+interface Website {
+  id: number;
+  name: string;
+  url: string;
+  status: string;
+  logoUrl: string;
+  addedAt : string;
+  userId : string
 }
-interface LeadWithIndexSignature extends Lead {
+
+interface WebsiteWithIndexSignature extends Website {
   [key: string]: any;
 }
 
 const Dashboard: React.FC = () => {
     const router = useRouter();
 
-  const [data, setData] = useState<Lead[]>([]);
-  const [filteredData, setFilteredData] = useState<Lead[]>([]);
+  const [data, setData] = useState<Website[]>([]);
+  const [filteredData, setFilteredData] = useState<Website[]>([]);
 
   const [sortField, setSortField] = useState<string>('');
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [selectedLead, setSelectedLead] = useState<Website | null>(null);
 
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const result =  await fetchData('lead');
+        const result =  await fetchWebsiteData();
         setFilteredData(result); 
 
         setData(result);
@@ -45,21 +44,19 @@ const Dashboard: React.FC = () => {
     fetchDashboardData();
   }, []);
 
-  const handleDelete = async (leadId: number) => {
+  const handleDelete = async (webId: number) => {
     try {
-        deleteLeadDataById
-        await deleteLeadDataById(`lead/${leadId}`);
-  
-        setData((prevData) => prevData.filter((lead) => lead.lead_id !== leadId));
-        setFilteredData((prevData) => prevData.filter((lead) => lead.lead_id !== leadId));
+        await deleteWebsiteById(`web-stats/${webId}`);
+        setData((prevData) => prevData.filter((web) => web.id !== webId));
+        setFilteredData((prevData) => prevData.filter((web) => web.id !== webId));
 
       } catch (error) {
         console.error('Error deleting lead:', error);
       }
   };
 
-  const handleUpdate = (leadId: number) => {
-    router.push(`/lead/${leadId}`);
+  const handleUpdate = (webId: number) => {
+    router.push(`/web-stats/${webId}`);
   };
 
   const handleSort = (field: string) => {
@@ -69,8 +66,8 @@ const Dashboard: React.FC = () => {
 
   const handleFilter = (startDate: string, endDate: string) => {
     const filteredResult = data.filter(
-      (lead) =>
-        new Date(lead.added_date) >= new Date(startDate) && new Date(lead.added_date) <= new Date(endDate)
+      (web) =>
+        new Date(web.addedAt) >= new Date(startDate) && new Date(web.addedAt) <= new Date(endDate)
     );
 
     setFilteredData(filteredResult);
@@ -82,8 +79,8 @@ const Dashboard: React.FC = () => {
     }    
 
     return [...filteredData].sort((a, b) => {
-      const valueA = (a as LeadWithIndexSignature)[sortField];
-      const valueB = (b as LeadWithIndexSignature)[sortField];
+      const valueA = (a as WebsiteWithIndexSignature)[sortField];
+      const valueB = (b as WebsiteWithIndexSignature)[sortField];
 
       if (valueA === valueB) {
         return 0;
@@ -93,8 +90,8 @@ const Dashboard: React.FC = () => {
     });
   }, [filteredData, sortField, sortDirection]);
 
-  const handleLeadClick = (lead: Lead) => {
-    setSelectedLead(lead);
+  const handleLeadClick = (web: Website) => {
+    setSelectedLead(web);
   };
 
   const handleCloseDrawer = () => {
@@ -106,41 +103,31 @@ const Dashboard: React.FC = () => {
     <div>
       <nav>
       <a href="/api/auth/logout" className="logout-link">Logout</a>
-
       </nav>
-      <h1>Lead Dashboard</h1>
-      {/* <Link href="/overview">
-        Overview
-      </Link> */}
+      <h1>Websites Lists</h1>
       <DateRangeFilter onFilter={handleFilter} />
       <table>
         <thead>
           <tr>
-          <th onClick={() => handleSort('lead_id')}>Lead ID</th>
-            <th onClick={() => handleSort('lead_name')}>Lead Name</th>
-            <th onClick={() => handleSort('interaction_count')}>Interaction Count</th>
-            <th onClick={() => handleSort('email')}>Email</th>
-            <th onClick={() => handleSort('lead_status')}>Status</th>
-            <th onClick={() => handleSort('source')}>Source</th>
-            <th onClick={() => handleSort('added_date')}>Added Date</th>
-            <th onClick={() => handleSort('updated_date')}>Updated Date</th>
+          <th onClick={() => handleSort('logoUrl')}> Logo</th>
+            <th onClick={() => handleSort('name')}> Name</th>
+            <th onClick={() => handleSort('url')}> Url</th>
+            <th onClick={() => handleSort('status')}>  Status</th>
+            <th onClick={() => handleSort('addedAt')}>  Added At</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
-        {sortedData.map((lead) => (
-            <tr key={lead.lead_id} onClick={() => handleLeadClick(lead)}>
-              <td>{lead.lead_id}</td>
-              <td>{lead.lead_name}</td>
-              <td>{lead.interaction_count}</td>
-              <td>{lead.email}</td>
-              <td>{lead.lead_status}</td>
-              <td>{lead.source}</td>
-              <td>{new Date(lead.added_date).toLocaleString()}</td>
-              <td>{new Date(lead.updated_date).toLocaleString()}</td>
+        {sortedData.map((web) => (
+            <tr key={web.id} onClick={() => handleLeadClick(web)}>
+              <td>{web.logoUrl}</td>
+              <td>{web.name}</td>
+              <td>{web.url}</td>
+              <td>{web.status}</td>
+              <td>{web.addedAt}</td>
               <td>
-                <button onClick={() => handleDelete(lead.lead_id)}>Delete</button>
-                <button onClick={() => handleUpdate(lead.lead_id)}>Update</button>
+                <button onClick={() => handleDelete(web.id)}>Delete</button>
+                <button onClick={() => handleUpdate(web.id)}>Update</button>
               </td>
             </tr>
           ))}

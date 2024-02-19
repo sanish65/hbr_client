@@ -1,39 +1,41 @@
 // pages/updateLead.tsx
-import { fetchData, fetchDataById, updateLeadById } from './../../utils/api';
+import { fetchWebsiteDataById, updateLeadById, updateWebsiteById } from '../../utils/api';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
-const UpdateLead: React.FC = () => {
+const UpdateWebsite: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const [leadData, setLeadData] = useState({
-    lead_id: 0,
-    lead_name: '',
-    email: '',
-    lead_status: '',
-    source: '',
+  const [websiteData, setWebsiteData] = useState({
+    id: 0,
+    name: '',
+    status: '',
+    url: '',
+    logoUrl: '',
+    addedAt: '',
+
   });
 
   useEffect(() => {
-    const fetchLeadData = async () => {
+    const fetchWebsiteData = async () => {
       try {
-        const response =  await fetchDataById(`lead/${id}`);
+        const response =  await fetchWebsiteDataById(`web-stats/${id}`);
         const data = await response;
-        setLeadData(data);
+        setWebsiteData(data);
       } catch (error) {
         alert(`Error fetching data: ${error}`);
       }
     };
 
     if (id) {
-      fetchLeadData();
+      fetchWebsiteData();
     }
   }, [id]);
 
   const handleUpdate = async () => {
     try {
-      await updateLeadById(`lead/${id}`,leadData);
+      await updateWebsiteById(`web-stats/${id}`,websiteData);
 
       router.push('/dashboard');
     } catch (error) {
@@ -43,52 +45,52 @@ const UpdateLead: React.FC = () => {
 
   return (
     <div>
-      <h1>Update Lead</h1>
+      <h1>Update website details</h1>
       <form>
         <label>
-          Lead ID:
-          <input type="text" value={leadData.lead_id} readOnly />
+          Website Id:
+          <input type="text" value={websiteData.id} readOnly />
         </label>
         <br />
         <label>
-          Lead Name:
+        Website Name:
           <input
             type="text"
-            value={leadData.lead_name}
-            onChange={(e) => setLeadData({ ...leadData, lead_name: e.target.value })}
+            value={websiteData.name}
+            onChange={(e) => setWebsiteData({ ...websiteData, name: e.target.value })}
           />
         </label>
         <br />
         <label>
-          Email:
+        Website Url:
           <input
             type="text"
-            value={leadData.email}
-            onChange={(e) => setLeadData({ ...leadData, email: e.target.value })}
+            value={websiteData.url}
+            onChange={(e) => setWebsiteData({ ...websiteData, url: e.target.value })}
           />
         </label>
         <br />
         <label>
-          Lead Status:
+        Website Status:
           <input
             type="text"
-            value={leadData.lead_status}
-            onChange={(e) => setLeadData({ ...leadData, lead_status: e.target.value })}
+            value={websiteData.status}
+            onChange={(e) => setWebsiteData({ ...websiteData, status: e.target.value })}
           />
         </label>
         <br />
         <label>
-          Source:
+        Website Logo Url:
           <input
             type="text"
-            value={leadData.source}
-            onChange={(e) => setLeadData({ ...leadData, source: e.target.value })}
+            value={websiteData.logoUrl}
+            onChange={(e) => setWebsiteData({ ...websiteData, logoUrl: e.target.value })}
           />
         </label>
         <br />
         <br />
         <button type="button" onClick={handleUpdate}>
-          Update Lead
+          Update Website
         </button>
       </form>
       <style jsx>{`
@@ -118,4 +120,4 @@ const UpdateLead: React.FC = () => {
   );
 };
 
-export default UpdateLead;
+export default UpdateWebsite;

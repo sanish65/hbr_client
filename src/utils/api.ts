@@ -15,6 +15,16 @@ interface Lead {
   interaction_count: string;
 }
 
+interface Website {
+  id: number;
+  name: string;
+  url: string;
+  status: string;
+  logoUrl: string;
+  userId: string;
+  addedAt: string;
+}
+
 interface Interaction {
   id: number;
   interaction_type: string;
@@ -28,7 +38,6 @@ interface Interaction {
 
 export const Signup = async (data: any): Promise<any> => {
   try {
-    console.log(`${API_BASE_URL}/authZero/signup`);
     const response = await axios.post(`${API_BASE_URL}/authZero/signup`, data);
     return response.data;
   } catch (error) {
@@ -39,7 +48,6 @@ export const Signup = async (data: any): Promise<any> => {
 
 export const Login = async (data: { sub: string }): Promise<any> => {
   try {
-    console.log(`${API_BASE_URL}/authZero/login`);
     const response = await axios.post(`${API_BASE_URL}/authZero/login`, data);
     return response.data;
   } catch (error) {
@@ -48,9 +56,9 @@ export const Login = async (data: { sub: string }): Promise<any> => {
   }
 };
 
-export const fetchData = async (endpoint: string): Promise<Lead[]> => {
+export const fetchWebsiteData = async (): Promise<Website[]> => {
   try {
-    const response = await axios.get<Lead[]>(`${API_BASE_URL}/${endpoint}`);
+    const response = await axios.get<Website[]>(`${API_BASE_URL}/web-stats`);
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -58,9 +66,11 @@ export const fetchData = async (endpoint: string): Promise<Lead[]> => {
   }
 };
 
-export const fetchDataById = async (endpoint: string): Promise<Lead> => {
+export const fetchWebsiteDataById = async (
+  endpoint: string
+): Promise<Website> => {
   try {
-    const response = await axios.get<Lead>(`${API_BASE_URL}/${endpoint}`);
+    const response = await axios.get<Website>(`${API_BASE_URL}/${endpoint}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -68,7 +78,7 @@ export const fetchDataById = async (endpoint: string): Promise<Lead> => {
   }
 };
 
-export const deleteLeadDataById = async (endpoint: string): Promise<any> => {
+export const deleteWebsiteById = async (endpoint: string): Promise<any> => {
   try {
     const response = await axios.delete<Lead>(`${API_BASE_URL}/${endpoint}`);
     return response.data;
@@ -78,7 +88,7 @@ export const deleteLeadDataById = async (endpoint: string): Promise<any> => {
   }
 };
 
-export const updateLeadById = async (
+export const updateWebsiteById = async (
   endpoint: string,
   data: any
 ): Promise<any> => {
